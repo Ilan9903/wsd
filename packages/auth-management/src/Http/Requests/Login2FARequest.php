@@ -1,0 +1,31 @@
+<?php
+
+namespace Hopla\AuthManagement\Http\Requests;
+
+use Illuminate\Contracts\Validation\ValidationRule;
+use Illuminate\Foundation\Http\FormRequest;
+
+class Login2FARequest extends FormRequest
+{
+    /**
+     * Determine if the user is authorized to make this request.
+     */
+    public function authorize(): bool
+    {
+        return true;
+    }
+
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array<string, ValidationRule|array<mixed>|string>
+     */
+    public function rules(): array
+    {
+        return [
+            'temp_token' => ['required', 'string'],
+            'otp' => ['required', 'string', 'size:6'],
+            'tenant' => ['required', 'string'],
+        ];
+    }
+}

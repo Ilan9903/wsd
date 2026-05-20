@@ -1,0 +1,17 @@
+{
+    "name": "hopla/auth-management",
+    "autoload": {
+        "psr-4": {
+            "Hopla\\AuthManagement\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Hopla\\AuthManagement\\AuthManagementServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}

@@ -1,0 +1,152 @@
+stages:
+  - test
+  - build
+  - deploy
+
+test:
+  stage: test
+  trigger:
+    include: .gitlab-ci-test.yml
+    strategy: depend
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_COMMIT_BRANCH == "test"
+      when: always
+    - when: never
+
+###### ############ #### ------------------ #### ############ ######
+###### ############ #### --///---RD---\\\-- #### ############ ######
+###### ############ #### ------------------ #### ############ ######
+
+build-rke2-rd:
+  stage: build
+  image:
+    name: $CI_REGISTRYS/xefi/rke2:tools-kaniko-default-debian-${KANIKO_IMAGE_TAG}
+    entrypoint: [""]
+    pull_policy: always
+  variables:
+    VERSION: "rd-latest"
+    DOCKER_CONFIG: "/kaniko/.docker"
+  before_script:
+    - |
+      mkdir -p ${DOCKER_CONFIG}
+      cat > ${DOCKER_CONFIG}/config.json <<EOF
+      {
+        "auths": {
+          "$CI_REGISTRYS": {
+            "username": "$registry_login",
+            "password": "$registry_secret"
+          }
+        }
+      }
+      EOF
+  script:
+    - >-
+      /kaniko/executor
+      --context ${CI_PROJECT_DIR}
+      --dockerfile ${CI_PROJECT_DIR}/Dockerfile
+      --destination ${CI_REGISTRY_IMAGES}:${VERSION}
+      --no-push-cache
+      --snapshot-mode=time
+      --use-new-run
+  rules:
+    - if: $CI_COMMIT_BRANCH == "develop"
+  tags:
+    - k3s-hopla-dev
+
+deploy-rke2-rd:
+  stage: deploy
+  image:
+    name: $CI_REGISTRYS/xefi/rke2:tools-kaniko-default-debian-${KANIKO_IMAGE_TAG}
+    entrypoint: [""]
+    pull_policy: always
+  variables:
+    HELM_CHART: "dev-laravel-api-rke2"
+    CHART_NAME: "${CI_ENVIRONMENT_NAME}-rke2"
+    VALUES_FILE: "${CI_ENVIRONMENT_NAME}-rke2-values.yaml"
+    VERSION: "rd-latest"
+  script:
+    - cp ${KUBECONFIG_DEV} $CI_PROJECT_DIR/admin.conf
+    - export KUBECONFIG=$CI_PROJECT_DIR/admin.conf
+    - git clone https://$CI_JOB_USER_HELM:$CI_JOB_TOKEN_HELM@gitlab.xefi.fr/xefi/devops/helm-charts.git $CI_PROJECT_DIR/helm-charts
+    - bash $CI_PROJECT_DIR/helm-charts/rke2-helm-charts/$HELM_CHART/deploy.sh
+  rules:
+    - if: $CI_COMMIT_BRANCH == "develop"
+  tags:
+    - k3s-hopla-dev
+  parallel:
+    matrix:
+      - CI_ENVIRONMENT_NAME:
+          - rd-wesend-api
+  environment:
+    name: ${CI_ENVIRONMENT_NAME}
+
+
+###### ############ #### ------------------ #### ############ ######
+###### ############ #### --///--DEMO--\\\-- #### ############ ######
+###### ############ #### ------------------ #### ############ ######
+
+build-rke2-demo:
+  stage: build
+  image:
+    name: $CI_REGISTRYS/xefi/rke2:tools-kaniko-default-debian-${KANIKO_IMAGE_TAG}
+    entrypoint: [""]
+    pull_policy: always
+  variables:
+    VERSION: "demo-latest"
+    DOCKER_CONFIG: "/kaniko/.docker"
+  before_script:
+    - |
+      mkdir -p ${DOCKER_CONFIG}
+      cat > ${DOCKER_CONFIG}/config.json <<EOF
+      {
+        "auths": {
+          "$CI_REGISTRYS": {
+            "username": "$registry_login",
+            "password": "$registry_secret"
+          }
+        }
+      }
+      EOF
+  script:
+    - >-
+      /kaniko/executor
+      --context ${CI_PROJECT_DIR}
+      --dockerfile ${CI_PROJECT_DIR}/DockerfilePROD
+      --destination ${CI_REGISTRY_IMAGES}:${VERSION}
+      --no-push-cache
+      --snapshot-mode=time
+      --use-new-run
+  only:
+    - tags
+  tags:
+    - k3s-hopla-dev
+
+deploy-rke2-demo:
+  stage: deploy
+  image:
+    name: $CI_REGISTRYS/xefi/rke2:tools-kaniko-default-debian-${KANIKO_IMAGE_TAG}
+    entrypoint: [""]
+    pull_policy: always
+  variables:
+    HELM_CHART: "dev-laravel-api-rke2"
+    CHART_NAME: "${CI_ENVIRONMENT_NAME}-rke2"
+    VALUES_FILE: "${CI_ENVIRONMENT_NAME}-rke2-values.yaml"
+    VERSION: "demo-latest"
+  script:
+    - cp ${KUBECONFIG_DEV} $CI_PROJECT_DIR/admin.conf
+    - export KUBECONFIG=$CI_PROJECT_DIR/admin.conf
+    - git clone https://$CI_JOB_USER_HELM:$CI_JOB_TOKEN_HELM@gitlab.xefi.fr/xefi/devops/helm-charts.git $CI_PROJECT_DIR/helm-charts
+    - bash $CI_PROJECT_DIR/helm-charts/rke2-helm-charts/$HELM_CHART/deploy.sh
+  needs:
+    - job: "build-rke2-demo"
+  only:
+    - tags
+  tags:
+    - k3s-hopla-dev
+  parallel:
+    matrix:
+      - CI_ENVIRONMENT_NAME:
+          - demo-wesend-api
+  environment:
+    name: ${CI_ENVIRONMENT_NAME}

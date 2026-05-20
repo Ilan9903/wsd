@@ -1,0 +1,18 @@
+{
+    "name": "hopla/kes-management",
+    "description": "Management of the KES server",
+    "autoload": {
+        "psr-4": {
+            "Hopla\\KESManagement\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Hopla\\KESManagement\\KESManagementServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}

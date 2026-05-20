@@ -1,0 +1,18 @@
+{
+    "name": "hopla/download-management",
+    "description": "Management of the Download model",
+    "autoload": {
+        "psr-4": {
+            "Hopla\\DownloadManagement\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Hopla\\DownloadManagement\\DownloadManagementServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}

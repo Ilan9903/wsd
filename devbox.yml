@@ -1,0 +1,13 @@
+port: 80
+services:
+  - mysql
+  - redis
+  - meilisearch
+volumes:
+  - .:/var/www
+post_start:
+  - php artisan key:generate --force
+  - php artisan storage:link
+  - php artisan migrate --force
+  - php artisan optimize:clear
+  - php artisan filament:clear-cached-components

@@ -1,0 +1,343 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Model\:\:can\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Access/Controls/ClientControl.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Model\:\:can\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Access/Controls/ContactControl.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Model\:\:can\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Access/Controls/GroupControl.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Model\:\:can\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Access/Controls/HistoryControl.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Model\:\:can\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: app/Access/Controls/LinkControl.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Model\:\:can\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Access/Controls/TenantConfigControl.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Model\:\:can\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Access/Controls/TenantContractControl.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Model\:\:can\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Access/Controls/ThemeControl.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Model\:\:can\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: app/Access/Controls/UserControl.php
+
+		-
+			message: '#^Variable name "model" is too generic\. Please use a more descriptive name\.$#'
+			identifier: xefi.noGenericWord
+			count: 1
+			path: app/Access/Controls/UserControl.php
+
+		-
+			message: '#^Variable \$tenant in PHPDoc tag @var does not exist\.$#'
+			identifier: varTag.variableNotFound
+			count: 1
+			path: app/Console/Commands/SetInactiveLinkExpired.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Auth\\AuthManager\:\:factory\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Http/Controllers/Auth/AuthController.php
+
+		-
+			message: '#^Variable \$resultUpload on left side of \?\? is never defined\.$#'
+			identifier: nullCoalesce.variable
+			count: 1
+			path: app/Http/Controllers/FileUploadController.php
+
+		-
+			message: '#^The getData function has more than 40 code lines\. Please reduce it\.$#'
+			identifier: xefi.maxLinePerMethod
+			count: 1
+			path: app/Livewire/ClientChart.php
+
+		-
+			message: '#^The getStats function has more than 40 code lines\. Please reduce it\.$#'
+			identifier: xefi.maxLinePerMethod
+			count: 1
+			path: app/Livewire/StatsOverview.php
+
+		-
+			message: '#^The getStats function has more than 40 code lines\. Please reduce it\.$#'
+			identifier: xefi.maxLinePerMethod
+			count: 1
+			path: app/Livewire/Tenants/StatsOverviewTenant.php
+
+		-
+			message: '#^The getData function has more than 40 code lines\. Please reduce it\.$#'
+			identifier: xefi.maxLinePerMethod
+			count: 1
+			path: app/Livewire/Tenants/UserChart.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$domains\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Models/Client.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Models/Client.php
+
+		-
+			message: '#^The panel function has more than 40 code lines\. Please reduce it\.$#'
+			identifier: xefi.maxLinePerMethod
+			count: 1
+			path: app/Providers/Filament/SupportPanelProvider.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Contracts\\Database\\Eloquent\\Builder\:\:controlled\(\)\.$#'
+			identifier: method.notFound
+			count: 5
+			path: app/Rest/Resources/Resource.php
+
+		-
+			message: '#^Try\-catch''s are forbidden\. Please use Exceptions instead\.$#'
+			identifier: xefi.noTryCatch
+			count: 2
+			path: app/Services/Kes/KesKey.php
+
+		-
+			message: '#^The removeBucket function has more than 40 code lines\. Please reduce it\.$#'
+			identifier: xefi.maxLinePerMethod
+			count: 1
+			path: app/Services/Minio/Minio.php
+
+		-
+			message: '#^Try\-catch''s are forbidden\. Please use Exceptions instead\.$#'
+			identifier: xefi.noTryCatch
+			count: 3
+			path: app/Services/Minio/Minio.php
+
+		-
+			message: '#^Parameter \#2 \$string of function explode expects string, float\|int\|list\<string\>\|string\|null given\.$#'
+			identifier: argument.type
+			count: 2
+			path: app/Services/Tenant/TenantFilament.php
+
+		-
+			message: '#^Parameter \#1 \$callback of static method App\\Models\\FileOrFolder\:\:forceDeleted\(\) expects \(callable\(\)\: mixed\)\|class\-string\|Illuminate\\Events\\QueuedClosure, array\{''Hopla\\\\FileOrFolderManagement\\\\Listeners\\\\HandleFileForceDeleted'', ''handle''\} given\.$#'
+			identifier: argument.type
+			count: 1
+			path: packages/file-or-folder-management/src/Providers/EventServiceProvider.php
+
+		-
+			message: '#^Called ''env'' outside of the config directory which returns null when the config is cached, use ''config''\.$#'
+			identifier: larastan.noEnvCallsOutsideOfConfig
+			count: 2
+			path: packages/gateway-management/config/gateway-management.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Http\\Client\\Response\:\:getBody\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: packages/gateway-management/src/Handlers/GatewayClient.php
+
+		-
+			message: '#^Method Hopla\\GatewayManagement\\Handlers\\GatewayClient\:\:checkClientWeDrop\(\) has parameter \$tenantId with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: packages/gateway-management/src/Handlers/GatewayClient.php
+
+		-
+			message: '#^Method Hopla\\GatewayManagement\\Handlers\\GatewayClient\:\:getClientWeDrop\(\) has parameter \$tenantId with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: packages/gateway-management/src/Handlers/GatewayClient.php
+
+		-
+			message: '#^Method Hopla\\GatewayManagement\\Handlers\\GatewayClient\:\:syncWedrop\(\) has parameter \$url with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: packages/gateway-management/src/Handlers/GatewayClient.php
+
+		-
+			message: '#^Method Hopla\\GatewayManagement\\Handlers\\GatewayManager\:\:checkClientWeDrop\(\) has parameter \$tenantId with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: packages/gateway-management/src/Handlers/GatewayManager.php
+
+		-
+			message: '#^Method Hopla\\GatewayManagement\\Handlers\\GatewayManager\:\:getClientWeDrop\(\) has parameter \$tenantId with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: packages/gateway-management/src/Handlers/GatewayManager.php
+
+		-
+			message: '#^Method Hopla\\GatewayManagement\\Handlers\\GatewayManager\:\:getClientWeDrop\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: packages/gateway-management/src/Handlers/GatewayManager.php
+
+		-
+			message: '#^Method Hopla\\GatewayManagement\\Handlers\\GatewayManager\:\:syncClientWeDrop\(\) has parameter \$url with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: packages/gateway-management/src/Handlers/GatewayManager.php
+
+		-
+			message: '#^Cannot access offset ''tenant'' on array\<mixed\>\|GuzzleHttp\\Promise\\PromiseInterface\|Illuminate\\Http\\Client\\Response\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: packages/gateway-management/src/Http/GatewayController.php
+
+		-
+			message: '#^Cannot access offset ''user_email'' on array\<mixed\>\|GuzzleHttp\\Promise\\PromiseInterface\|Illuminate\\Http\\Client\\Response\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 2
+			path: packages/gateway-management/src/Http/GatewayController.php
+
+		-
+			message: '#^Cannot call method getStatusCode\(\) on array\<mixed\>\|GuzzleHttp\\Promise\\PromiseInterface\|Illuminate\\Http\\Client\\Response\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: packages/gateway-management/src/Http/GatewayController.php
+
+		-
+			message: '#^The sendDataFileFromLink function has more than 40 code lines\. Please reduce it\.$#'
+			identifier: xefi.maxLinePerMethod
+			count: 1
+			path: packages/gateway-management/src/Http/GatewayController.php
+
+		-
+			message: '#^Parameter \#1 \$user of method Hopla\\HistoryManagement\\Handlers\\LogManager\:\:createdLinkHistories\(\) expects App\\Models\\User, App\\Models\\Link\|App\\Models\\User\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: packages/history-management/src/Listeners/Link/HandleLinkCreated.php
+
+		-
+			message: '#^Parameter \#1 \$user of method Hopla\\HistoryManagement\\Handlers\\LogManager\:\:generateDescription\(\) expects App\\Models\\User, App\\Models\\Link\|App\\Models\\User\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: packages/history-management/src/Listeners/Link/HandleLinkCreated.php
+
+		-
+			message: '#^Parameter \#1 \$user of method Hopla\\HistoryManagement\\Handlers\\LogManager\:\:createdLinkHistories\(\) expects App\\Models\\User, App\\Models\\Link\|App\\Models\\User\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: packages/history-management/src/Listeners/Link/HandleLinkUpdated.php
+
+		-
+			message: '#^Parameter \#1 \$user of method Hopla\\HistoryManagement\\Handlers\\LogManager\:\:generateDescription\(\) expects App\\Models\\User, App\\Models\\Link\|App\\Models\\User\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: packages/history-management/src/Listeners/Link/HandleLinkUpdated.php
+
+		-
+			message: '#^Parameter \#1 \$user of method Hopla\\HistoryManagement\\Handlers\\LogManager\:\:createdUserHistories\(\) expects App\\Models\\User, Illuminate\\Contracts\\Auth\\Authenticatable given\.$#'
+			identifier: argument.type
+			count: 1
+			path: packages/history-management/src/Listeners/User/HandleUserLogin.php
+
+		-
+			message: '#^Parameter \#1 \$user of method Hopla\\HistoryManagement\\Handlers\\LogManager\:\:generateDescription\(\) expects App\\Models\\User, Illuminate\\Contracts\\Auth\\Authenticatable given\.$#'
+			identifier: argument.type
+			count: 1
+			path: packages/history-management/src/Listeners/User/HandleUserLogin.php
+
+		-
+			message: '#^Parameter \#1 \$user of method Hopla\\HistoryManagement\\Handlers\\LogManager\:\:createdUserHistories\(\) expects App\\Models\\User, Illuminate\\Contracts\\Auth\\Authenticatable given\.$#'
+			identifier: argument.type
+			count: 1
+			path: packages/history-management/src/Listeners/User/HandleUserLogout.php
+
+		-
+			message: '#^Parameter \#1 \$user of method Hopla\\HistoryManagement\\Handlers\\LogManager\:\:generateDescription\(\) expects App\\Models\\User, Illuminate\\Contracts\\Auth\\Authenticatable given\.$#'
+			identifier: argument.type
+			count: 1
+			path: packages/history-management/src/Listeners/User/HandleUserLogout.php
+
+		-
+			message: '#^Parameter \#1 \$callback of static method App\\Models\\Link\:\:forceDeleted\(\) expects \(callable\(\)\: mixed\)\|class\-string\|Illuminate\\Events\\QueuedClosure, array\{''Hopla\\\\HistoryManagement\\\\Listeners\\\\Link\\\\HandleLinkForceDeleted'', ''handle''\} given\.$#'
+			identifier: argument.type
+			count: 1
+			path: packages/history-management/src/Providers/EventServiceProvider.php
+
+		-
+			message: '#^Parameter \#1 \$callback of static method App\\Models\\Link\:\:restored\(\) expects \(callable\(\)\: mixed\)\|class\-string\|Illuminate\\Events\\QueuedClosure, array\{''Hopla\\\\HistoryManagement\\\\Listeners\\\\Link\\\\HandleLinkRestored'', ''handle''\} given\.$#'
+			identifier: argument.type
+			count: 1
+			path: packages/history-management/src/Providers/EventServiceProvider.php
+
+		-
+			message: '#^Parameter \#1 \$callback of static method App\\Models\\Link\:\:softDeleted\(\) expects \(callable\(\)\: mixed\)\|class\-string\|Illuminate\\Events\\QueuedClosure, array\{''Hopla\\\\HistoryManagement\\\\Listeners\\\\Link\\\\HandleLinkSoftDeleted'', ''handle''\} given\.$#'
+			identifier: argument.type
+			count: 1
+			path: packages/history-management/src/Providers/EventServiceProvider.php
+
+		-
+			message: '#^Called ''env'' outside of the config directory which returns null when the config is cached, use ''config''\.$#'
+			identifier: larastan.noEnvCallsOutsideOfConfig
+			count: 4
+			path: packages/kes-management/config/kes-management.php
+
+		-
+			message: '#^Try\-catch''s are forbidden\. Please use Exceptions instead\.$#'
+			identifier: xefi.noTryCatch
+			count: 2
+			path: packages/kes-management/src/Handler/KesKeyManager.php
+
+		-
+			message: '#^Unable to resolve the template type TKey in call to function collect$#'
+			identifier: argument.templateType
+			count: 1
+			path: packages/upload-management/src/Handlers/UploadHandler.php
+
+		-
+			message: '#^Unable to resolve the template type TValue in call to function collect$#'
+			identifier: argument.templateType
+			count: 1
+			path: packages/upload-management/src/Handlers/UploadHandler.php
+
+		-
+			message: '#^Variable \$part in PHPDoc tag @var does not exist\.$#'
+			identifier: varTag.variableNotFound
+			count: 1
+			path: packages/upload-management/src/Handlers/UploadHandler.php
+
+		-
+			message: '#^Method Hopla\\UploadManagement\\Handlers\\UploadManager\:\:getParts\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: packages/upload-management/src/Handlers/UploadManager.php
+
+		-
+			message: '#^Method Hopla\\UploadManagement\\Handlers\\UploadManager\:\:getUploadedFileCreate\(\) has parameter \$resultUpload with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: packages/upload-management/src/Handlers/UploadManager.php

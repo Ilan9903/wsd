@@ -1,0 +1,25 @@
+.git
+.idea
+.vscode
+
+vendor/
+**/vendor/
+
+node_modules/
+**/node_modules/
+
+storage/logs/
+storage/framework/cache/
+storage/framework/sessions/
+storage/framework/views/
+storage/framework/testing/
+
+bootstrap/cache/*.php
+
+Dockerfile*
+docker-compose*
+
+# DevBox / Railpack
+vendor
+node_modules
+storage/logs/*.log
