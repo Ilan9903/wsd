@@ -1,0 +1,197 @@
+stages:
+  - deps
+  - test
+
+deps:
+  stage: deps
+  image:
+    name: harbor.xefi.fr/xefi/hopla/hopla-frankenstein-php:8.4-stack
+    pull_policy: always
+  cache:
+    key:
+      files:
+        - composer.lock
+      prefix: ${CI_PROJECT_ID}-global-composer-vendors
+    paths:
+      - vendor/
+    policy: pull-push
+  variables:
+    XDEBUG_MODE: off
+  script:
+    - apt-get update && apt-get install -y libjpeg-dev libpng-dev libwebp-dev libexif-dev unzip git libicu-dev
+    - docker-php-ext-install exif intl
+    - pecl install redis && echo "extension=redis.so" > /usr/local/etc/php/conf.d/redis.ini
+    - php -m | grep -E 'exif|redis'
+    - composer install --prefer-dist --no-progress --no-interaction
+    - |
+      cat > .env << 'EOF'
+      APP_NAME="wesend-api"
+      APP_ENV=testing-wesend
+      APP_KEY=
+      APP_DEBUG=true
+      APP_URL="https://wesend-api.api.wedrop.xyz"
+      APP_DOMAIN=".api.wesend.xyz"
+      LOG_CHANNEL=stack
+      LOG_LEVEL=debug
+
+      SSL_CERT=""
+      SSL_KEY=""
+      MINIO_KMS_KES_SERVER=""
+      MINIO_KMS_SECRET_KEY=""
+      MINIO_KMS_ACCESS_KEY=""
+      MINIO_ACCESS_KEY=""
+      MINIO_SECRET_KEY=""
+      MINIO_REGION=""
+      MINIO_BUCKET=""
+      MINIO_ENDPOINT=""
+      URL_WEDROP_API="wedrop-api.api.wedrop.xyz"
+      APP_SSL_VERIFY="false"
+
+      DB_CONNECTION=mysql
+      DB_HOST=mysql
+      DB_PORT=3306
+      DB_DATABASE=testing
+      DB_USERNAME=root
+      DB_PASSWORD=rootpassword
+      EOF
+    - export APP_KEY=$(php artisan key:generate --show)
+    - sed -i "s|APP_KEY=|APP_KEY=${APP_KEY}|" .env
+    - php artisan jwt:secret --force
+    - php artisan config:cache
+    - grep "JWT_SECRET" .env
+  rules:
+    - when: always
+  tags:
+    - fr-east-2-hopla-dev-runner
+  artifacts:
+    paths:
+      - vendor/
+      - .env
+
+phpunit:
+  stage: test
+  image:
+    name: harbor.xefi.fr/xefi/hopla/hopla-frankenstein-php:8.4-stack
+    pull_policy: always
+
+  services:
+    - name: getmeili/meilisearch:v1.7.3
+      alias: meilisearch
+      command: [ "meilisearch", "--http-addr", "0.0.0.0:7700" ]
+      pull_policy: always
+    - name: mysql:8.0
+      alias: mysql
+      command: [ "--default-authentication-plugin=mysql_native_password" ]
+      variables:
+        MYSQL_ROOT_PASSWORD: rootpassword
+        MYSQL_DATABASE: testdb
+        MYSQL_USER: testuser
+        MYSQL_PASSWORD: testpass
+    - name: redis:7-alpine
+      alias: redis
+      pull_policy: always
+
+  variables:
+    MEILISEARCH_HOST: "http://meilisearch:7700"
+    XDEBUG_MODE: coverage
+
+  cache:
+    key:
+      files:
+        - composer.lock
+      prefix: ${CI_PROJECT_ID}-phpunit-cache
+    paths:
+      - .phpunit.cache/
+      - coverage/
+    policy: pull-push
+
+  dependencies:
+    - deps
+
+  script:
+    - mkdir -p "$(pwd)/storage/app/public/office/test"
+    - echo "📂 Contenu du dossier storage/app/public/office :"
+    - ls -l storage/app/public/office
+    - echo " Dossier créé :"
+    - ls -ld storage/app/public/office/test
+    - apt-get update && apt-get install -y unzip git default-mysql-client libjpeg-dev libpng-dev libwebp-dev libexif-dev
+    - docker-php-ext-install exif
+    - pecl install redis && echo "extension=redis.so" > /usr/local/etc/php/conf.d/20-redis.ini
+    - php -m | grep redis || (echo "Redis extension not loaded!" && exit 1)
+    - echo "memory_limit = 512M" >> /usr/local/etc/php/conf.d/memory.ini
+    - php artisan config:clear
+    - |
+      echo "Waiting for Meilisearch to be ready..."
+      until curl -s "$MEILISEARCH_HOST/health" | grep -q '"status":"available"'; do
+        echo "Waiting for Meilisearch..."
+        sleep 2
+      done
+    - |
+      echo "Waiting for MySQL to be ready..."
+      until mysqladmin ping -h mysql -u testuser -ptestpass --silent; do
+        echo "Waiting for MySQL..."
+        sleep 2
+      done
+    - php artisan migrate --force
+    - php artisan test --coverage --min=70
+
+  rules:
+    - when: always
+
+  tags:
+    - fr-east-2-hopla-dev-runner
+
+pint:
+  stage: test
+  image:
+    name: harbor.xefi.fr/xefi/hopla/hopla-frankenstein-php:8.4-stack
+    pull_policy: always
+  cache:
+    key:
+      files:
+        - composer.lock
+      prefix: ${CI_PROJECT_ID}-pint-cache
+    paths:
+      - .pint.cache/
+    policy: pull-push
+  script:
+    - ./vendor/bin/pint --test
+  rules:
+    - when: always
+  dependencies:
+    - deps
+  tags:
+    - fr-east-2-hopla-dev-runner
+
+phpstan:
+  stage: test
+  image:
+    name: harbor.xefi.fr/xefi/hopla/hopla-frankenstein-php:8.4-stack
+    pull_policy: always
+  cache:
+    key:
+      files:
+        - composer.lock
+        - phpstan-ci.neon
+      prefix: ${CI_PROJECT_ID}-phpstan-cache
+    paths:
+      - .phpstan.cache/
+    policy: pull-push
+  services:
+    - name: redis:7-alpine
+      alias: redis
+      pull_policy: always
+  script:
+    - apt-get update && apt-get install -y libjpeg-dev libpng-dev libwebp-dev libexif-dev
+    - docker-php-ext-install exif
+    - pecl install redis && echo "extension=redis.so" > /usr/local/etc/php/conf.d/20-redis.ini
+    - php -m | grep redis || (echo "Redis extension not loaded!" && exit 1)
+    - ./vendor/bin/phpstan analyse --memory-limit=512M -c phpstan-ci.neon
+  rules:
+    - when: always
+  dependencies:
+    - deps
+  tags:
+    - fr-east-2-hopla-dev-runner
+
+
